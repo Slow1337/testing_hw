@@ -31,4 +31,21 @@ class BasicTester(unittest.TestCase):
         test_list = []
         for entry in main.documents:
             owner = entry['name']
+            test_list.append(owner)
+        test_list = set(test_list)
+        self.assertSetEqual(main.get_all_doc_owners_names(), test_list)
+    
+    def test_delete_doc_shelf(self):
+        testing_pool = ('1006', '2207 876234', None, 'fgsfds', True)
+        for test_entry in testing_pool:
+            with self.subTest(test_entry=test_entry):
+                directories = main.directories.copy()
+                for key, directory in directories.items():
+                    if test_entry in directory:
+                        directory.remove(test_entry)
+                main.remove_doc_from_shelf(test_entry)
+                self.assertDictEqual(main.directories, directories)
+    
+    def test_add_new_shelf(self):
+        
             
