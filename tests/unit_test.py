@@ -26,3 +26,9 @@ class BasicTester(unittest.TestCase):
         for item in testing_pool:
             with self.subTest(item=item):
                 self.assertEqual(main.get_doc_owner_name(), item)
+    
+    def test_all_doc_owners(self):
+        test_list = []
+        for entry in main.documents:
+            owner = entry['name']
+            
