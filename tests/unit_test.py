@@ -35,7 +35,7 @@ class BasicTester(unittest.TestCase):
         test_list = set(test_list)
         self.assertSetEqual(main.get_all_doc_owners_names(), test_list)
     
-    def test_delete_doc_shelf(self):
+    def test_delete_doc_from_shelf(self):
         testing_pool = ('1006', '2207 876234', None, 'fgsfds', True)
         for test_entry in testing_pool:
             with self.subTest(test_entry=test_entry):
@@ -47,5 +47,48 @@ class BasicTester(unittest.TestCase):
                 self.assertDictEqual(main.directories, directories)
     
     def test_add_new_shelf(self):
-        
-            
+        testing_pool = [
+            ('4', True),
+            ('5', True),
+            ('3', False),
+            ('1', False)
+        ]
+        for test_entry in testing_pool:
+            with self.subTest(test_entry=test_entry):
+                self.assertEqual(main.add_new_shelf(test_entry[0]), test_entry)
+    
+    def test_append_doc_to_shelf(self):
+        testing_pool = [
+            ('1008', '2'),
+            ('12345', '3)'),
+            ('12qw43', '7'),
+            ('6543', '4')
+        ]
+        for test_entry in testing_pool:
+            with self.subTest(test_entry=test_entry):
+                main.append_doc_to_shelf(test_entry[0], test_entry[1])
+                self.assertIn(test_entry[0], main.directories[test_entry[1]])
+    
+    @patch('builtins.input', side_effect = ['2207 876234', 'asdf', 'fgsfds'])
+    def test_delete_doc(self, mock_input):
+        testing_results = [True, None, None]
+        for result in testing_results:
+            with self.subTest(result=result):
+                returned_value = main.delete_doc()
+                if returned_value is None:
+                    self.assertEqual(returned_value, result)
+                else:
+                    self.assertEqual(returned_value[1], result)
+    
+    @patch('builtins.input', side_effect = ['11-2', '10006', 'qwer', '5'])
+    def test_get_doc_shelf(self, mock_input):
+        estimated_results = ['1', '2', None, None]
+        for result in estimated_results:
+            with self.subTest(result=result):
+                self.assertEqual(main.get_doc_shelf(), result)
+    
+    @patch('builtins.input', side_effect = ['11-2', '3', '5455 028765', '3'])
+    def test_move_doc_to_shelf(self, mock_input):
+        pass
+    # реализовать тут логику и оставшиеся функции тоже доделать
+    
