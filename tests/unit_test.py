@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 import main
 
+
 class BasicTester(unittest.TestCase):
     def setUp(self) -> None:
         return super().setUp()
@@ -115,5 +116,3 @@ class BasicTester(unittest.TestCase):
                 self.assertEqual(result, str(number))
                 self.assertIn(person_data, main.documents)
     
-    
-                
