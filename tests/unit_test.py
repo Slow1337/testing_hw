@@ -89,6 +89,31 @@ class BasicTester(unittest.TestCase):
     
     @patch('builtins.input', side_effect = ['11-2', '3', '5455 028765', '3'])
     def test_move_doc_to_shelf(self, mock_input):
-        pass
-    # реализовать тут логику и оставшиеся функции тоже доделать
+        check_pool = [
+            ('11-2', '3'),
+            ('5455 028765', '3')
+        ]
+        for pair in check_pool:
+            with self.subTest(pair=pair):
+                main.move_doc_to_shelf()
+                self.assertIn(pair[0], main.directories[pair[1]])
     
+    @patch('builtins.input', side_effect = [
+        '12345', 'passport', 'Петр Сидоров', '0',
+        '2365 4321', 'driver license', 'Федор Пупкин', '1',
+        '5423', 'insurance', 'Иван Пивохлебов', '2'
+        ])
+    def test_add_new_doc(self, mock_input):
+        check_pool = [
+        {'type': 'passport', 'number': '12345', 'name': 'Петр Сидоров'},
+        {'type': 'driver license', 'number': '2365 4321', 'name': 'Федор Пупкин'},
+        {'type': 'insurance', 'number': '5423', 'name': 'Иван Пивохлебов'}
+        ]
+        for number, person_data in enumerate(check_pool):
+            with self.subTest(person_data=person_data, number=number):
+                result = main.add_new_doc()
+                self.assertEqual(result, str(number))
+                self.assertIn(person_data, main.documents)
+    
+    
+                
